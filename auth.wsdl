@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions
+  name="AuthService"
+  targetNamespace="http://auth.service/"
+  xmlns="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:tns="http://auth.service/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ── Types ─────────────────────────────────────────────── -->
+  <types>
+    <xsd:schema targetNamespace="http://auth.service/">
+
+      <!-- RegisterUser -->
+      <xsd:element name="RegisterUser">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="username" type="xsd:string"/>
+            <xsd:element name="password" type="xsd:string"/>
+            <xsd:element name="email"    type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="RegisterUserResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="success" type="xsd:boolean"/>
+            <xsd:element name="message" type="xsd:string"/>
+            <xsd:element name="userId"  type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <!-- LoginUser -->
+      <xsd:element name="LoginUser">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="username" type="xsd:string"/>
+            <xsd:element name="password" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="LoginUserResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="success" type="xsd:boolean"/>
+            <xsd:element name="message" type="xsd:string"/>
+            <xsd:element name="token"   type="xsd:string"/>
+            <xsd:element name="userId"  type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <!-- ValidateToken -->
+      <xsd:element name="ValidateToken">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="token" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ValidateTokenResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="valid"    type="xsd:boolean"/>
+            <xsd:element name="userId"   type="xsd:int"/>
+            <xsd:element name="username" type="xsd:string"/>
+            <xsd:element name="role"     type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+    </xsd:schema>
+  </types>
+
+  <!-- ── Messages ──────────────────────────────────────────── -->
+  <message name="RegisterUserRequest">
+    <part name="parameters" element="tns:RegisterUser"/>
+  </message>
+  <message name="RegisterUserResponse">
+    <part name="parameters" element="tns:RegisterUserResponse"/>
+  </message>
+
+  <message name="LoginUserRequest">
+    <part name="parameters" element="tns:LoginUser"/>
+  </message>
+  <message name="LoginUserResponse">
+    <part name="parameters" element="tns:LoginUserResponse"/>
+  </message>
+
+  <message name="ValidateTokenRequest">
+    <part name="parameters" element="tns:ValidateToken"/>
+  </message>
+  <message name="ValidateTokenResponse">
+    <part name="parameters" element="tns:ValidateTokenResponse"/>
+  </message>
+
+  <!-- ── PortType ───────────────────────────────────────────── -->
+  <portType name="AuthServicePortType">
+    <operation name="RegisterUser">
+      <input  message="tns:RegisterUserRequest"/>
+      <output message="tns:RegisterUserResponse"/>
+    </operation>
+    <operation name="LoginUser">
+      <input  message="tns:LoginUserRequest"/>
+      <output message="tns:LoginUserResponse"/>
+    </operation>
+    <operation name="ValidateToken">
+      <input  message="tns:ValidateTokenRequest"/>
+      <output message="tns:ValidateTokenResponse"/>
+    </operation>
+  </portType>
+
+  <!-- ── Binding ────────────────────────────────────────────── -->
+  <binding name="AuthServiceBinding" type="tns:AuthServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="RegisterUser">
+      <soap:operation soapAction="RegisterUser"/>
+      <input>  <soap:body use="literal"/> </input>
+      <output> <soap:body use="literal"/> </output>
+    </operation>
+    <operation name="LoginUser">
+      <soap:operation soapAction="LoginUser"/>
+      <input>  <soap:body use="literal"/> </input>
+      <output> <soap:body use="literal"/> </output>
+    </operation>
+    <operation name="ValidateToken">
+      <soap:operation soapAction="ValidateToken"/>
+      <input>  <soap:body use="literal"/> </input>
+      <output> <soap:body use="literal"/> </output>
+    </operation>
+  </binding>
+
+  <!-- ── Service ───────────────────────────────────────────── -->
+  <service name="AuthService">
+    <port name="AuthServicePort" binding="tns:AuthServiceBinding">
+      <soap:address location="http://localhost:4000/soap"/>
+    </port>
+  </service>
+
+</definitions>
